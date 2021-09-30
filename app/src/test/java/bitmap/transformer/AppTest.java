@@ -7,8 +7,33 @@ import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
 class AppTest {
-    @Test void appHasAGreeting() {
-        App classUnderTest = new App();
-        assertNotNull(classUnderTest.getGreeting(), "app should have a greeting");
+
+    // tests not end, it is need to configure, that just initial tests
+
+    @Test
+    public boolean waterMark() {
+        assertTrue(waterMark(), "This will succeed.");
+        return false;
     }
+
+    @Test
+    public void NegativeColor() {
+        assertTrue(true, "This will succeed.");
+    }
+
+    @Test
+    public void grey() {
+        assertTrue(true, "This will succeed.");
+    }
+
+    @Test
+    public void reverseImageVertically() {
+        assertTrue(true, "This will succeed.");
+    }
+
+    @Test
+    public void reverseImageHorizontally() {
+        assertTrue(true, "This will succeed.");
+    }
+
 }

@@ -26,7 +26,7 @@ public class App {
                 System.out.println("The image become negative");
                 process = new Bitmap(inputFilePathToImage, outputFilePathToFolder, "negative.bmp");
 
-                process.NegativeColor();
+                process.negativeColor();
                 sc.close();
 
                 break;

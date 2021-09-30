@@ -27,7 +27,7 @@ public class Bitmap {
 
     }
 
-    public void waterMark(String text) {
+    public Boolean waterMark(String text) {
         File sourceImageFile = new File(inputPath);
         File destImageFile = new File(outputPath + newImageName);
 
@@ -35,7 +35,6 @@ public class Bitmap {
             BufferedImage sourceImage = ImageIO.read(sourceImageFile);
             Graphics2D g2d = (Graphics2D) sourceImage.getGraphics();
 
-            // initializes necessary graphic properties
             AlphaComposite alphaChannel = AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.5f);
             g2d.setComposite(alphaChannel);
             g2d.setColor(Color.RED);
@@ -43,82 +42,111 @@ public class Bitmap {
             FontMetrics fontMetrics = g2d.getFontMetrics();
             Rectangle2D rect = fontMetrics.getStringBounds(text, g2d);
 
-            // calculates the coordinate where the String is painted
             int centerX = (sourceImage.getWidth() - (int) rect.getWidth()) / 2;
             int centerY = sourceImage.getHeight() / 2;
 
-            // paints the textual watermark
             g2d.drawString(text, centerX, centerY);
 
             ImageIO.write(sourceImage, "png", destImageFile);
             g2d.dispose();
 
+            return true;
+
         } catch (IOException ex) {
             System.err.println(ex);
+
+            return false;
         }
     }
 
-    public void NegativeColor() throws IOException {
-        File sourceImageFile = new File(inputPath);
-        File destImageFile = new File(outputPath + newImageName);
-        BufferedImage sourceImage = ImageIO.read(sourceImageFile);
-        for (int x = 0; x < sourceImage.getWidth(); x++) {
-            for (int y = 0; y < sourceImage.getHeight(); y++) {
-                int rgba = sourceImage.getRGB(x, y);
-                Color col = new Color(rgba, true);
-                col = new Color(255 - col.getRed(), 255 - col.getGreen(), 255 - col.getBlue());
-                sourceImage.setRGB(x, y, col.getRGB());
+    public Boolean negativeColor() throws IOException {
 
+        try {
+            File sourceImageFile = new File(inputPath);
+            File destImageFile = new File(outputPath + newImageName);
+            BufferedImage sourceImage = ImageIO.read(sourceImageFile);
+            for (int x = 0; x < sourceImage.getWidth(); x++) {
+                for (int y = 0; y < sourceImage.getHeight(); y++) {
+                    int rgba = sourceImage.getRGB(x, y);
+                    Color col = new Color(rgba, true);
+                    col = new Color(255 - col.getRed(), 255 - col.getGreen(), 255 - col.getBlue());
+                    sourceImage.setRGB(x, y, col.getRGB());
+                }
             }
+            ImageIO.write(sourceImage, "png", destImageFile);
+            return true;
+        } catch (IOException ex) {
+            System.err.println(ex);
+
+            return false;
         }
-        ImageIO.write(sourceImage, "png", destImageFile);
-    }
-
-    public void grey() throws IOException {
-
-        File sourceImageFile = new File(inputPath);
-        File destImageFile = new File(outputPath + newImageName);
-        BufferedImage sourceImage = ImageIO.read(sourceImageFile);
-
-        BufferedImage grey = new BufferedImage(sourceImage.getWidth(), sourceImage.getHeight(),
-                BufferedImage.TYPE_USHORT_GRAY);
-        Graphics modifications = grey.getGraphics();
-        modifications.drawImage(this.image, 0, 0, null);
-        modifications.dispose();
-
-        ImageIO.write(grey, "png", destImageFile);
 
     }
 
-    public void reverseImageVertically() throws IOException {
+    public Boolean grey() throws IOException {
+        try {
+            File sourceImageFile = new File(inputPath);
+            File destImageFile = new File(outputPath + newImageName);
+            BufferedImage sourceImage = ImageIO.read(sourceImageFile);
 
-        File sourceImageFile = new File(inputPath);
-        File destImageFile = new File(outputPath + newImageName);
-        BufferedImage sourceImage = ImageIO.read(sourceImageFile);
+            BufferedImage grey = new BufferedImage(sourceImage.getWidth(), sourceImage.getHeight(),
+                    BufferedImage.TYPE_USHORT_GRAY);
+            Graphics modifications = grey.getGraphics();
+            modifications.drawImage(this.image, 0, 0, null);
+            modifications.dispose();
 
-        for (int i = 0; i < sourceImage.getWidth(); i++) {
-            for (int j = 0; j < sourceImage.getHeight() / 2; j++) {
-                int temp = sourceImage.getRGB(i, j);
-                sourceImage.setRGB(i, j, sourceImage.getRGB(i, sourceImage.getHeight() - j - 1));
-                sourceImage.setRGB(i, sourceImage.getHeight() - j - 1, temp);
+            ImageIO.write(grey, "png", destImageFile);
+            return true;
+        } catch (IOException ex) {
+            System.err.println(ex);
+
+            return false;
+        }
+    }
+
+    public Boolean reverseImageVertically() throws IOException {
+        try {
+            File sourceImageFile = new File(inputPath);
+            File destImageFile = new File(outputPath + newImageName);
+            BufferedImage sourceImage = ImageIO.read(sourceImageFile);
+
+            for (int i = 0; i < sourceImage.getWidth(); i++) {
+                for (int j = 0; j < sourceImage.getHeight() / 2; j++) {
+                    int temp = sourceImage.getRGB(i, j);
+                    sourceImage.setRGB(i, j, sourceImage.getRGB(i, sourceImage.getHeight() - j - 1));
+                    sourceImage.setRGB(i, sourceImage.getHeight() - j - 1, temp);
+                }
             }
+            ImageIO.write(sourceImage, "png", destImageFile);
+            return true;
+        } catch (IOException ex) {
+            System.err.println(ex);
+
+            return false;
         }
-        ImageIO.write(sourceImage, "png", destImageFile);
     }
 
-    public void reverseImageHorizontally() throws IOException {
-        File sourceImageFile = new File(inputPath);
-        File destImageFile = new File(outputPath + newImageName);
-        BufferedImage sourceImage = ImageIO.read(sourceImageFile);
+    public Boolean reverseImageHorizontally() throws IOException {
+        try {
+            File sourceImageFile = new File(inputPath);
+            File destImageFile = new File(outputPath + newImageName);
+            BufferedImage sourceImage = ImageIO.read(sourceImageFile);
 
-        for (int i = 0; i < sourceImage.getHeight() / 2; i++) {
-            for (int j = 0; j < sourceImage.getWidth(); j++) {
-                int temp = sourceImage.getRGB(i, j);
-                sourceImage.setRGB(i, j, sourceImage.getRGB(sourceImage.getWidth() - i - 1, j));
-                sourceImage.setRGB(sourceImage.getWidth() - i - 1, j, temp);
+            for (int j = 0; j < sourceImage.getHeight(); j++) {
+                for (int i = 0; i < sourceImage.getWidth() / 2; i++) {
+                    int temp = sourceImage.getRGB(i, j);
+                    sourceImage.setRGB(i, j, sourceImage.getRGB(sourceImage.getWidth() - i - 1, j));
+                    sourceImage.setRGB(sourceImage.getWidth() - i - 1, j, temp);
+                }
             }
-        }
-        ImageIO.write(sourceImage, "png", destImageFile);
-    }
+            ImageIO.write(sourceImage, "png", destImageFile);
+            return true;
 
+        } catch (IOException ex) {
+            System.err.println(ex);
+
+            return false;
+        }
+
+    }
 }
